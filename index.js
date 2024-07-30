@@ -110,6 +110,7 @@ app.get('/pages/:pageid', async (req, res) => {
 
     try {
         // const [rows] = await pool.query('SELECT * FROM pages WHERE page_name = ?', [pageid]);
+        // return lenght
         const [rows] = await pool.query('SELECT * FROM pages WHERE page_name = Home');
         return res.json(rows.length);
 
