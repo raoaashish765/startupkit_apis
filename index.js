@@ -50,8 +50,7 @@ const pool = mysql.createPool({
     // acquireTimeout: 10000,
 }).promise();
 
-const result = await pool.query("SELECT * FROM templates")
-console.log(result);
+
 
 // let pool;
 // try {
