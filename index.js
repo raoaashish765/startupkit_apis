@@ -36,13 +36,41 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //     database: 'vue_database'
 // }).promise();
 
-const pool = mysql.createPool({
-    host: `216.10.242.140`,
-    user: `wipsite_startupkit`,
-    password: `NWYV!(ymnNVU`,
-    database: `wipsite_startupkit_react`,
-    // port: 3306
-}).promise();
+
+// const pool = mysql.createPool({
+//     host: `216.10.242.140`,
+//     user: `wipsite_startupkit`,
+//     password: `NWYV!(ymnNVU`,
+//     database: `wipsite_startupkit_react`,
+//     waitForConnections: true,
+//     connectionLimit: 10,
+//     queueLimit: 0,
+//     connectTimeout: 10000,
+//     acquireTimeout: 10000,
+// }).promise();
+
+
+let pool;
+try {
+    pool = mysql.createPool({
+        host: '216.10.242.140',
+        user: 'wipsite_startupkit',
+        password: 'NWYV!(ymnNVU',
+        database: 'wipsite_startupkit_react',
+        port: 3306,
+        // waitForConnections: true,
+        // connectionLimit: 10,
+        // queueLimit: 0,
+        // connectTimeout: 10000,
+        // acquireTimeout: 10000,
+    }).promise();
+
+    console.log('Database pool created successfully.');
+} catch (error) {
+    console.error('Error creating database pool:', error);
+    // Optionally, handle the error further or exit the process
+    process.exit(1); // Exit with failure code
+}
 
 // const result = await pool.query("SELECT * FROM vue_database")
 // console.log(result);
@@ -55,7 +83,10 @@ async function getsql() {
 const port = 8000;
 const host = '0.0.0.0';
 
-
+app.get('/ping', (req, res) => {
+    console.log("server is alive!!");
+    res.send('Pong');
+});
 
 app.listen(port, host, () => {
     console.log(`server started on port: ${port}`);
@@ -74,73 +105,13 @@ app.get('/users', async (req, res) => { // Add async here
     }
 });
 
-// Route to fetch page data for the home page
-// app.get('/pages/home', async (req, res) => {
-//     try {
-//         const [rows] = await pool.query('SELECT * FROM pages WHERE page_name = ?', ['home']);
-
-//         if (rows.length === 0) {
-//             res.status(404).json({ message: 'Page not found' });
-//         } else {
-//             res.json(rows[0]);
-//         }
-//     } catch (error) {
-//         console.error('Error fetching page data:', error);
-//         res.status(500).json({ message: 'Internal server error' });
-//     }
-// });
-
-// Route to fetch clients data for the home page
-// app.get('/sections/clients', async (req, res) => {
-//     try {
-//         const [rows] = await pool.query('SELECT * FROM sections WHERE section_name = ?', ['clients']);
-
-//         if (rows.length === 0) {
-//             res.status(404).json({ message: 'Page not found' });
-//         } else {
-//             res.json(rows[0]);
-//         }
-//     } catch (error) {
-//         console.error('Error fetching page data:', error);
-//         res.status(500).json({ message: 'Internal server error' });
-//     }
-// });
-// app.get('/sections/slider', async (req, res) => {
-//     try {
-//         const [rows] = await pool.query('SELECT * FROM sections WHERE section_name = ?', ['slider']);
-
-//         if (rows.length === 0) {
-//             res.status(404).json({ message: 'Page not found' });
-//         } else {
-//             console.log(rows[0]);
-//             res.json(rows[0]);
-//         }
-//     } catch (error) {
-//         console.error('Error fetching page data:', error);
-//         res.status(500).json({ message: 'Internal server error' });
-//     }
-// });
-// app.get('/sections/services', async (req, res) => {
-//     try {
-//         const [rows] = await pool.query('SELECT * FROM sections WHERE section_name = ?', ['services']);
-
-//         if (rows.length === 0) {
-//             res.status(404).json({ message: 'Page not found' });
-//         } else {
-//             console.log(rows[0]);
-//             res.json(rows[0]);
-//         }
-//     } catch (error) {
-//         console.error('Error fetching page data:', error);
-//         res.status(500).json({ message: 'Internal server error' });
-//     }
-// });
-
 app.get('/pages/:pageid', async (req, res) => {
     const pageid = req.params.pageid; // Get secid from URL parameter
 
     try {
-        const [rows] = await pool.query('SELECT * FROM pages WHERE page_name = ?', [pageid]);
+        // const [rows] = await pool.query('SELECT * FROM pages WHERE page_name = ?', [pageid]);
+        const [rows] = await pool.query('SELECT * FROM pages WHERE page_name = Home');
+        return res.json(rows.length);
 
         if (rows.length === 0) {
             res.status(404).json({ message: 'Section not found' });
@@ -150,7 +121,12 @@ app.get('/pages/:pageid', async (req, res) => {
             // console.log("done...");
         }
     } catch (error) {
-        console.error('Error fetching section data:', error);
+        console.error('Error fetching section data:', {
+            message: error.message,
+            stack: error.stack,
+            query: 'SELECT * FROM pages WHERE page_name = ?',
+            params: [pageid]
+        });
         res.status(500).json({ message: 'Internal server error' });
     }
 });
@@ -1519,7 +1495,7 @@ app.post('/api/addnewpage', async (req, res) => {
 
         const insertResult = await pool.query(
             'INSERT INTO pages (page_name, content, author, url, template_name) VALUES (?, ?, ?, ?, ?)',
-            [newname, the_template[0].content, creator_name, '/'+newname, selecttemp]
+            [newname, the_template[0].content, creator_name, '/' + newname, selecttemp]
         );
 
         const newPageId = insertResult[0].insertId;
