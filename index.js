@@ -55,10 +55,11 @@ try {
         user: 'wipsite_startupkit',
         password: 'NWYV!(ymnNVU',
         database: 'wipsite_startupkit_react',
+        port: 3306,
         waitForConnections: true,
         connectionLimit: 10,
         queueLimit: 0,
-        connectTimeout: 100000,
+        connectTimeout: 10000,
     }).promise();
 
     console.log('Database pool created successfully.');
