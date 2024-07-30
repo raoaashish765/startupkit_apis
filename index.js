@@ -1483,6 +1483,19 @@ app.get('/api/alltemplates', async (req, res) => {
     }
 });
 
+app.get('/testtemp', async (req, res) => {
+    const [rows] = await pool.query('SELECT * FROM templates');
+
+    if (rows.length === 0) {
+        res.status(404).json({ message: 'Page not found' });
+    } else {
+        console.log("request sent back");
+        // console.log(rows);
+        res.json(rows);
+    }
+
+});
+
 app.post('/api/addnewpage', async (req, res) => {
     try {
         const { newname, selecttemp } = req.body;
