@@ -20,7 +20,11 @@ app.use("/public", express.static('public'));
 const mysql = require('mysql2');
 
 // Allow all CORS requests
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', // Allow requests from this origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Parse JSON bodies
 app.use(bodyParser.json());
