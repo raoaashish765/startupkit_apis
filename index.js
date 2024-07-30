@@ -88,6 +88,10 @@ app.listen(port, host, () => {
 app.get('/', (req, res) => {
     res.send('Welcome.. server running!!');
 });
+app.get('/ping', (req, res) => {
+    console.log("server is alive!!");
+    res.send('Pong');
+});
 app.get('/users', async (req, res) => { // Add async here
     try {
         const result = await getsql(); // Call the async function getsql() here
