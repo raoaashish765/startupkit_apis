@@ -50,6 +50,8 @@ const pool = mysql.createPool({
     // acquireTimeout: 10000,
 }).promise();
 
+const result = await pool.query("SELECT * FROM templates")
+console.log(result);
 
 // let pool;
 // try {
@@ -73,8 +75,7 @@ const pool = mysql.createPool({
 //     process.exit(1); // Exit with failure code
 // }
 
-// const result = await pool.query("SELECT * FROM vue_database")
-// console.log(result);
+
 
 async function getsql() {
     const result = await pool.query("SELECT * FROM users")
