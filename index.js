@@ -36,13 +36,34 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //     database: 'vue_database'
 // }).promise();
 
-const pool = mysql.createPool({
-    host: `216.10.242.140`,
-    user: `wipsite_startupkit`,
-    password: `NWYV!(ymnNVU`,
-    database: `wipsite_startupkit_react`,
-    // port: 3306
-}).promise();
+// const pool = mysql.createPool({
+//     host: `216.10.242.140`,
+//     user: `wipsite_startupkit`,
+//     password: `NWYV!(ymnNVU`,
+//     database: `wipsite_startupkit_react`,
+//     // port: 3306
+// }).promise();
+
+let pool;
+try {
+    pool = mysql.createPool({
+        host: '216.10.242.140',
+        user: 'wipsite_startupkit',
+        password: 'NWYV!(ymnNVU',
+        database: 'wipsite_startupkit_react',
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+        connectTimeout: 10000,
+        acquireTimeout: 10000,
+    }).promise();
+
+    console.log('Database pool created successfully.');
+} catch (error) {
+    console.error('Error creating database pool:', error);
+    // Optionally, handle the error further or exit the process
+    process.exit(1); // Exit with failure code
+}
 
 // const result = await pool.query("SELECT * FROM vue_database")
 // console.log(result);
