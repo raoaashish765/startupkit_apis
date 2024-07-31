@@ -50,7 +50,7 @@ const pool = mysql.createPool({
     // acquireTimeout: 10000,
 }).promise();
 
-
+pool.connect();
 
 // let pool;
 // try {
@@ -77,9 +77,11 @@ const pool = mysql.createPool({
 
 
 async function getsql() {
-    const result = await pool.query("SELECT * FROM users")
+    const result = await pool.query("SELECT * FROM users");
+    console.log(result);
     return result;
 }
+getsql();
 
 const port = 8000;
 const host = '0.0.0.0';
