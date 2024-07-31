@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // }).promise();
 
 
-const pool = mysql.createPool({
+const pool = mysql.createConnection({
     host: `216.10.242.140`,
     user: `wipsite_startupkit`,
     password: `NWYV!(ymnNVU`,
@@ -50,7 +50,7 @@ const pool = mysql.createPool({
     // acquireTimeout: 10000,
 }).promise();
 
-
+pool.connect();
 
 // let pool;
 // try {
