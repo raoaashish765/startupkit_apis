@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 const pool = mysql2.createPool({
-    host: `216.10.242.140`,
+    host: `wipsite.in`,
     user: `wipsite_startupkit`,
     password: `NWYV!(ymnNVU`,
     database: `wipsite_startupkit_react`,
