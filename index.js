@@ -50,7 +50,6 @@ const pool = mysql.createPool({
     // acquireTimeout: 10000,
 }).promise();
 
-pool.connect();
 
 // let pool;
 // try {
