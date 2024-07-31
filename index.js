@@ -80,7 +80,6 @@ async function getsql() {
     console.log(result);
     return result;
 }
-getsql();
 
 const port = 8000;
 const host = '0.0.0.0';
