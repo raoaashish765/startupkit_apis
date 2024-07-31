@@ -43,11 +43,10 @@ const pool = mysql.createConnection({
     password: `NWYV!(ymnNVU`,
     database: `wipsite_startupkit_react`,
     port: 3306,
-    // waitForConnections: true,
-    // connectionLimit: 10,
-    // queueLimit: 0,
-    // connectTimeout: 10000,
-    // acquireTimeout: 10000,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    connectTimeout: 10000,
 }).promise();
 
 pool.connect();
