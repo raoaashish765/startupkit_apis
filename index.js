@@ -17,7 +17,8 @@ const randomColor = require('randomcolor');
 app.use("/public", express.static('public'));
 
 
-const mysql2 = require('mysql2');
+const mysql2 = require('mysql2/promise.js');
+
 
 // Allow all CORS requests
 app.use(cors());
@@ -43,12 +44,8 @@ const pool = mysql2.createPool({
     password: `NWYV!(ymnNVU`,
     database: `wipsite_startupkit_react`,
     port: 3306,
-    // waitForConnections: true,
-    // connectionLimit: 10,
-    // queueLimit: 0,
-    // connectTimeout: 10000,
-    // acquireTimeout: 10000,
-}).promise();
+});
+
 
 
 // let pool;
