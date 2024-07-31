@@ -11,6 +11,7 @@ const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const randomColor = require('randomcolor');
+const os = require('os');
 
 
 // Serve static files from the 'public' directory
@@ -18,6 +19,7 @@ app.use("/public", express.static('public'));
 
 
 const mysql2 = require('mysql2/promise.js');
+// const mysql = require('mysql/index.js');
 
 
 // Allow all CORS requests
@@ -38,7 +40,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // }).promise();
 
 
-const pool = mysql2.createPool({
+var pool = mysql2.createPool({
+    connectionLimit: 10,
     host: `wipsite.in`,
     user: `wipsite_startupkit`,
     password: `NWYV!(ymnNVU`,
@@ -87,7 +90,24 @@ app.get('/ping', (req, res) => {
 });
 
 app.listen(port, host, () => {
-    console.log(`server started on port: ${port}`);
+    // console.log(`server started on port: ${port}`);
+    const networkInterfaces = os.networkInterfaces();
+    let localIP = 'localhost';
+    
+    for (const iface in networkInterfaces) {
+        for (const details of networkInterfaces[iface]) {
+            if (details.family === 'IPv4' && !details.internal) {
+                localIP = details.address;
+                break;
+            }
+        }
+    }
+
+    // Construct the URL
+    const url = `http://${localIP}:${port}`;
+
+    console.log(`Server started on port: ${port}`);
+    console.log(`Access it at: ${url}`);
 })
 
 app.get('/', (req, res) => {
