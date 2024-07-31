@@ -37,19 +37,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // }).promise();
 
 
-const pool = mysql.createConnection({
+const pool = mysql.createPool({
     host: `216.10.242.140`,
     user: `wipsite_startupkit`,
     password: `NWYV!(ymnNVU`,
     database: `wipsite_startupkit_react`,
     port: 3306,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0,
-    connectTimeout: 10000,
+    // waitForConnections: true,
+    // connectionLimit: 10,
+    // queueLimit: 0,
+    // connectTimeout: 10000,
+    // acquireTimeout: 10000,
 }).promise();
 
-pool.connect();
+
 
 // let pool;
 // try {
